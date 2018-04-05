@@ -5,10 +5,10 @@ import com.paralint.spikes.crypto.dsl.keys.Key;
 import com.paralint.spikes.crypto.dsl.transformations.Appender;
 
 public class Pipeline {
-	static byte[] getKeyInFormatXYZ() {
+	public static byte[] getKeyInFormatXYZ() {
 		
 		//Get the asset like we actually do
-		Asset asset = new Asset();
+		Asset asset = new Asset("demo", "3des");
 		//Get the key from the request, like we do
 		Key key = asset.getKey("opk");
 

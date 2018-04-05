@@ -7,16 +7,27 @@ import com.paralint.spikes.crypto.dsl.keys.Key;
 
 public class Asset {
 	
-	Map<String, Key> keys;
+	private String name;
+	private Map<String, Key> keys;
 	
-	public Asset() {
+	public Asset(String name, String... keytypes) {
+		this.name = name;
+		
 		keys = new HashMap<String, Key>();
-		keys.put("rc2", new Key());
-		keys.put("hmac", new Key());
-		keys.put("opk", new Key());
+		
+		for(String type : keytypes) {
+            keys.put(type, new Key());
+		}
 	}
-	public String emp() {
-		return "cn.w.a.12313.tmc";
+
+	public String name() {
+		return this.name;
+	}
+
+	public void setKey(String name, byte[] raw) {
+		Key key = this.getKey(name);
+		
+		keys.put(name, key.clone(raw));
 	}
 
 	public Key getKey(String name) {

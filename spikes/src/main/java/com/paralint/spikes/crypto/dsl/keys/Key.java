@@ -11,11 +11,23 @@ public class Key {
 		this.set(b);
 	}
 
+	public Key(byte[] rawKey) {
+		this.set(rawKey);
+	}
+
 	public byte[] get() {
 		return key;
 	}
 	
-	public void set(byte[] key) {
+	private void set(byte[] key) {
 		this.key = key;
+	}
+	
+	/*
+	 * Keys are immutable. To change the bytes, a copy will be returned. This prevents 
+	 * users of the pipeline to mess with the original key they are given.
+	 */
+	public Key clone(byte[] key) {
+		return new Key(key);
 	}
 }

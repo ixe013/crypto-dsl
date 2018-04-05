@@ -12,8 +12,6 @@ public class Appender implements Transformation {
 	@Override
 	public Key Transform(Map<String, Object> context, Asset asset, Key key, String[] params) {
 
-		Key result = key;
-		
 		byte[] padding;
 		
 		//assert params have 1 item
@@ -34,9 +32,7 @@ public class Appender implements Transformation {
 	    byte[] paddedKey = Arrays.copyOf(key.get(), key.get().length + padding.length);
 	    System.arraycopy(padding, 0, paddedKey, key.get().length, padding.length);
 
-		result.set(paddedKey);
-
-		return result;
+		return key.clone(paddedKey);
 	}
 
 }
