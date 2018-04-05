@@ -1,6 +1,7 @@
 package com.paralint.spikes.crypto.dsl.engine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class TransformationEngine {
 	List<Entry<Transformation, String[]>> transformations = new ArrayList<>();
 	Map<String, Object> context = new HashMap<String, Object>();
 
+	public static final String OUTPUT_DEFAULT_NAME = "key";
+	
 	static public Entry<Transformation, String[]> createTransformationAndParam(Transformation t) {
 		return createTransformationAndParam(t, (String[])null);
 	}
@@ -53,27 +56,7 @@ public class TransformationEngine {
 		return te;
 	}
 
-	
-	//FIXME: Will be removed when dynamic Groovy methods are implemented
-	public TransformationEngine append(String text) {
-		this.transformations.add(createTransformationAndParam(new Appender(), text));
-		return this;
-	}
-
-
-	//FIXME: Will be removed when dynamic Groovy methods are implemented
-	public TransformationEngine toHex() {
-		this.transformations.add(createTransformationAndParam(new ToHex()));
-		return this;
-	}
-	
-	//FIXME: Will be removed when dynamic Groovy methods are implemented
-	public TransformationEngine addStep(Transformation transform, String... params) {
-		this.transformations.add(createTransformationAndParam(transform, params));
-		return this;
-	}
-
-	//FIXME: Dummy method to test Groovy calling
+	//FIXME: START Dummy methods to test Groovy calling
 	public void sayHello(String dude) {
 		System.out.println("Hello "+dude);
 	}
@@ -81,8 +64,30 @@ public class TransformationEngine {
 	public String whoShouldIGreet() {
 		return "World";
 	}
+	
+	public TransformationEngine compose(String step) {
+		System.out.println(step);
+		return this;
+	}
 
-	public byte[] build() {
+    public Object propertyMissing(String name) {
+        String msg = "Tried to access missing property " + name;
+        System.err.println(msg);
+        return msg;
+    }
+    public Object methodMissing(String name, Object args) {
+        List<Object> argsList = Arrays.asList((Object[]) args);
+        String msg = "methodMissing called with name '" + name + "' and args = " + argsList;
+        System.err.println(msg);
+        return this;
+    }
+
+	public byte[] save() {
+		return save(OUTPUT_DEFAULT_NAME);
+	}
+	//FIXME: START Dummy methods to test Groovy calling
+
+	public byte[] save(String name) {
 		Key result = this.key;
 		Map<String, Object> context = new HashMap<String, Object>();
 
@@ -92,11 +97,12 @@ public class TransformationEngine {
 			Transformation transform = transformAndParam.getKey();
 			result = transform.Transform(context, asset, result, params);
 			/*/
-			//Same thing as above on one line, but less convenient for breakpoints
+			//Same thing as above but on a single line. Less convenient for breakpoints...
 			transform.getKey().Transform(context, asset, result, transform.getValue());
 			//*/
 		}
 		
+		//Should save the result under name
 		return result.get();
 	}
 }

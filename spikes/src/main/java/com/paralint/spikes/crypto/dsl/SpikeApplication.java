@@ -10,7 +10,11 @@ public class SpikeApplication {
 
 	public static void main(String[] args) {
 		for(String filename : args) {
+            System.out.println("=============================");
+            System.out.println(filename);
+            System.out.println("=============================");
             Pipeline.processCryptoDSLFile(filename);
+            System.out.println("-----------------------------");
 		}
 		
 //		SpringApplication.run(DemoApplication.class, args);
