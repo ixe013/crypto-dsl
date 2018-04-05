@@ -1,4 +1,8 @@
-package com.paralint.spikes.crypto.dsl;
+package com.paralint.spikes.crypto.dsl.engine;
+
+import com.paralint.spikes.crypto.dsl.assets.Asset;
+import com.paralint.spikes.crypto.dsl.keys.Key;
+import com.paralint.spikes.crypto.dsl.transformations.Appender;
 
 public class Pipeline {
 	static byte[] getKeyInFormatXYZ() {
@@ -17,5 +21,4 @@ public class Pipeline {
 			.build()
 			;
 	}
-
 }

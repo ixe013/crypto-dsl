@@ -1,4 +1,4 @@
-package com.paralint.spikes.crypto.dsl;
+package com.paralint.spikes.crypto.dsl.keys;
 
 import java.util.Random;
 

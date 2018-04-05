@@ -1,7 +1,9 @@
-package com.paralint.spikes.crypto.dsl;
+package com.paralint.spikes.crypto.dsl.assets;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.paralint.spikes.crypto.dsl.keys.Key;
 
 public class Asset {
 	

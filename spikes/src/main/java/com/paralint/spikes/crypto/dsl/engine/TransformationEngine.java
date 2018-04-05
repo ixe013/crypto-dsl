@@ -1,10 +1,17 @@
-package com.paralint.spikes.crypto.dsl;
+package com.paralint.spikes.crypto.dsl.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.paralint.spikes.crypto.dsl.assets.Asset;
+import com.paralint.spikes.crypto.dsl.keys.Key;
+import com.paralint.spikes.crypto.dsl.transformations.Appender;
+import com.paralint.spikes.crypto.dsl.transformations.ToHex;
+import com.paralint.spikes.crypto.dsl.transformations.Transformation;
+
 import java.util.AbstractMap.SimpleEntry;
 
 public class TransformationEngine {
@@ -12,6 +19,7 @@ public class TransformationEngine {
 	private final Asset asset;
 
 	List<Entry<Transformation, String[]>> transformations = new ArrayList<>();
+	Map<String, Object> context = new HashMap<String, Object>();
 
 	static public Entry<Transformation, String[]> createTransformationAndParam(Transformation t) {
 		return createTransformationAndParam(t, (String[])null);
@@ -39,18 +47,20 @@ public class TransformationEngine {
 	}
 
 	
-	
-	
+	//FIXME: Will be removed when dynamic Groovy methods are implemented
 	public TransformationEngine append(String text) {
 		this.transformations.add(createTransformationAndParam(new Appender(), text));
 		return this;
 	}
 
+
+	//FIXME: Will be removed when dynamic Groovy methods are implemented
 	public TransformationEngine toHex() {
 		this.transformations.add(createTransformationAndParam(new ToHex()));
 		return this;
 	}
 	
+	//FIXME: Will be removed when dynamic Groovy methods are implemented
 	public TransformationEngine addStep(Transformation transform, String... params) {
 		this.transformations.add(createTransformationAndParam(transform, params));
 		return this;
@@ -66,7 +76,7 @@ public class TransformationEngine {
 			Transformation transform = transformAndParam.getKey();
 			result = transform.Transform(context, asset, result, params);
 			/*/
-			//Same thing as above on one line, less convenient for breakpoints
+			//Same thing as above on one line, but less convenient for breakpoints
 			transform.getKey().Transform(context, asset, result, transform.getValue());
 			//*/
 		}

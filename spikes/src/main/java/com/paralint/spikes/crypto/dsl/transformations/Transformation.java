@@ -1,6 +1,9 @@
-package com.paralint.spikes.crypto.dsl;
+package com.paralint.spikes.crypto.dsl.transformations;
 
 import java.util.Map;
+
+import com.paralint.spikes.crypto.dsl.assets.Asset;
+import com.paralint.spikes.crypto.dsl.keys.Key;
 
 public interface Transformation {
 	/*
