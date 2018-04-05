@@ -35,6 +35,13 @@ public class TransformationEngine {
 		return transformAndParam;	
 	}
 
+	public TransformationEngine() {
+		//FIXME: Will disapear once I learn to inject functions 
+		//(not methods) in the Groovy Shell
+		this.asset = null;
+		this.key = null;
+	}
+
 	private TransformationEngine(Asset asset, Key key) {
 		this.asset = asset;
 		this.key = key;
@@ -64,6 +71,15 @@ public class TransformationEngine {
 	public TransformationEngine addStep(Transformation transform, String... params) {
 		this.transformations.add(createTransformationAndParam(transform, params));
 		return this;
+	}
+
+	//FIXME: Dummy method to test Groovy calling
+	public void sayHello(String dude) {
+		System.out.println("Hello "+dude);
+	}
+
+	public String whoShouldIGreet() {
+		return "World";
 	}
 
 	public byte[] build() {

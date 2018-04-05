@@ -9,8 +9,10 @@ import com.paralint.spikes.crypto.dsl.engine.Pipeline;
 public class SpikeApplication {
 
 	public static void main(String[] args) {
-		byte [] result = Pipeline.getKeyInFormatXYZ();
-		System.out.println(result);
+		for(String filename : args) {
+            Pipeline.processCryptoDSLFile(filename);
+		}
+		
 //		SpringApplication.run(DemoApplication.class, args);
 	}
 }
