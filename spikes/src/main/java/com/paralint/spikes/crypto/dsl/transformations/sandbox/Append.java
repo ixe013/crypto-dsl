@@ -1,12 +1,13 @@
-package com.paralint.spikes.crypto.dsl.transformations;
+package com.paralint.spikes.crypto.dsl.transformations.sandbox;
 
 import java.util.Arrays;
 import java.util.Map;
 
 import com.paralint.spikes.crypto.dsl.assets.Asset;
 import com.paralint.spikes.crypto.dsl.keys.Key;
+import com.paralint.spikes.crypto.dsl.transformations.BaseTransformation;
 
-public class Appender implements Transformation {
+public class Append extends BaseTransformation {
 
 	public static final String PREFIX = "0x";
 	@Override

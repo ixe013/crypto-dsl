@@ -1,8 +1,5 @@
 package com.paralint.spikes.crypto.dsl.engine;
 
-import groovy.lang.GroovyShell;
-import groovy.lang.Binding;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -11,6 +8,11 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import com.paralint.spikes.crypto.dsl.assets.Asset;
 import com.paralint.spikes.crypto.dsl.assets.AssetRepository;
 import com.paralint.spikes.crypto.dsl.keys.Key;
+
+import groovy.lang.Binding;
+import groovy.lang.GroovyRuntimeException;
+import groovy.lang.GroovyShell;
+import groovy.lang.MissingMethodException;
 
 public class Pipeline {
 	public static final String REPOSITORY_OBJECT = "repository";
@@ -41,6 +43,10 @@ public class Pipeline {
 			System.err.println(String.format("File %s does not compile. %s", name, cfe.getMessage()));
 		} catch (IOException ioe) {
 			System.err.println(String.format("Could not read from file %s. %s", name, ioe.getMessage()));
+		} catch (MissingMethodException mme) {
+			System.err.println(String.format("Script %s calls undefined transformation %s", name, mme.getMethod()));
+		} catch (GroovyRuntimeException gre) {
+			System.err.println(String.format("Script %s failed with error: %s", name, gre.getMessage()));
 		}
 
 		return "I will deal with the return type later";
