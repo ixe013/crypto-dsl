@@ -39,6 +39,11 @@
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.kohsuke</groupId>
+			<artifactId>groovy-sandbox</artifactId>
+			<version>1.18</version>
+		</dependency>
 	</dependencies>
 
 	<build>

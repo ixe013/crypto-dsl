@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.kohsuke.groovy.sandbox.SandboxTransformer;
 
 import com.paralint.spikes.crypto.dsl.assets.Asset;
 import com.paralint.spikes.crypto.dsl.assets.AssetRepository;
@@ -22,7 +24,11 @@ public class Pipeline {
 
 	public static String processCryptoDSLFile(String name) {
 		Binding binding = new Binding();
-		GroovyShell shell = new GroovyShell(binding);
+
+		CompilerConfiguration compilerConfig = new CompilerConfiguration();
+		compilerConfig.addCompilationCustomizers(new SandboxTransformer());
+
+		GroovyShell shell = new GroovyShell(binding, compilerConfig);
 
 		AssetRepository repository = new AssetRepository();
 
@@ -34,6 +40,9 @@ public class Pipeline {
 		binding.setProperty(REPOSITORY_OBJECT, repository);
 		binding.setProperty(ASSET_OBJECT, a1);
 		binding.setProperty(KEY_OBJECT, k1);
+
+		PipelineSandboxFilter sandboxFilter = new PipelineSandboxFilter();
+		sandboxFilter.register();
 
 		File file = new File(name);
 
@@ -47,7 +56,12 @@ public class Pipeline {
 			System.err.println(String.format("Script %s calls undefined transformation %s", name, mme.getMethod()));
 		} catch (GroovyRuntimeException gre) {
 			System.err.println(String.format("Script %s failed with error: %s", name, gre.getMessage()));
+		} catch (SecurityException se) {
+			System.err.println(
+					String.format("Script %s terminated because of insecure behavior: %s", name, se.getMessage()));
 		}
+
+		System.out.println("Script execution completed");
 
 		return "I will deal with the return type later";
 	}

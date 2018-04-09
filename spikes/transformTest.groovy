@@ -14,12 +14,17 @@ The real work will be in makeClosureOutOf(t), which I don't know how to do yet,
 although this looks like the right way https://stackoverflow.com/a/32297842/591064
 //*/
 
-
-encryptedKey = 
+def zzz = encryptedKey = 
     engine.format(asset, key)
        .append("00")
-       .pad(16, "0")
-       .hex("two")
-       .base64Encode("three")
+       //.pad(16, "0")
+       //.hex("two")
+       //.base64Encode("three")
        .save()
+
+//This is blocked by the sandbox filter
+//def s = System
+//s.exit(-1)
+
+println asset.name
 
