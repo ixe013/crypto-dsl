@@ -69,6 +69,7 @@ public class TransformationEngine {
         try {
             Class<?> transformation = Class.forName(fullyQualifiedClassName);
             
+			System.out.println("Adding transformation " + transformation.getName());
 			this.transformations
 					.add(queueTransformation((Transformation) transformation.newInstance(), (Object[]) args));
         } catch (ClassNotFoundException cnfe) {

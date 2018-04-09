@@ -12,6 +12,7 @@ import com.paralint.spikes.crypto.dsl.assets.AssetRepository;
 import com.paralint.spikes.crypto.dsl.keys.Key;
 
 import groovy.lang.Binding;
+import groovy.lang.Closure;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingMethodException;
@@ -20,32 +21,36 @@ public class Pipeline {
 	public static final String REPOSITORY_OBJECT = "repository";
 	public static final String ASSET_OBJECT = "asset";
 	public static final String KEY_OBJECT = "key";
-	public static final String ENGINE_OBJECT = "engine";
+	public static final String FORMAT_CLOSURE = "format";
 
 	public static String processCryptoDSLFile(String name) {
 		Binding binding = new Binding();
 
-		CompilerConfiguration compilerConfig = new CompilerConfiguration();
-		compilerConfig.addCompilationCustomizers(new SandboxTransformer());
-
-		GroovyShell shell = new GroovyShell(binding, compilerConfig);
-
+		// Instanciate the objects that will be available in the script
 		AssetRepository repository = new AssetRepository();
-
 		Asset a1 = repository.findAsset("asset1");
 		Key k1 = a1.getKey("hmac");
+		Closure<TransformationEngine> format = new TransformationEngineClosure(null);
 		
-		//Make the TransformationEngine available to the script
-		binding.setProperty(ENGINE_OBJECT, new TransformationEngine());
+		// Assign variable names to the objects we prepared
+		binding.setProperty(FORMAT_CLOSURE, format);
 		binding.setProperty(REPOSITORY_OBJECT, repository);
 		binding.setProperty(ASSET_OBJECT, a1);
 		binding.setProperty(KEY_OBJECT, k1);
 
+		// Add a white listing filter
 		PipelineSandboxFilter sandboxFilter = new PipelineSandboxFilter();
 		sandboxFilter.register();
 
+		// Prepare the Groovy compiler and interpreter (shell)
+		CompilerConfiguration compilerConfig = new CompilerConfiguration();
+		compilerConfig.addCompilationCustomizers(new SandboxTransformer());
+		GroovyShell shell = new GroovyShell(binding, compilerConfig);
+
+		// Load the script file
 		File file = new File(name);
 
+		// Try to run the script
 		try {
 			shell.evaluate(file);
 		} catch (CompilationFailedException cfe) {

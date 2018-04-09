@@ -17,9 +17,11 @@ public class PipelineSandboxFilter extends GroovyValueFilter {
 			com.paralint.spikes.crypto.dsl.keys.Key.class,
 			com.paralint.spikes.crypto.dsl.assets.AssetRepository.class,
 			com.paralint.spikes.crypto.dsl.engine.TransformationEngine.class,
+			com.paralint.spikes.crypto.dsl.engine.TransformationEngineClosure.class,
 			groovy.lang.MetaClassImpl.class,
 			groovy.lang.Closure.class,
-			groovy.lang.Script.class
+			groovy.lang.Script.class,
+			groovy.lang.GroovyShell.class
 			));
 
 	/**
